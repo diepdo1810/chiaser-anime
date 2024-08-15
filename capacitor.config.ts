@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'aniproject',
   cordova: {},
   loggingBehavior: "debug",
-  webDir: "out",
+  webDir: ".next",
   plugins: {
     SplashScreen: {
       launchShowDuration: 0
