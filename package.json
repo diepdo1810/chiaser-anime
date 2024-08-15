@@ -3,12 +3,14 @@
   "version": "2.8.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8096",
     "build": "next build",
     "start": "NEXT_SHARP_PATH=\"/tmp/node_modules/sharp\" next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
     "@reduxjs/toolkit": "^2.2.5",
     "@vercel/analytics": "^1.2.2",
     "@vidstack/react": "^1.10.9",
@@ -19,6 +21,7 @@
     "framer-motion": "^11.0.3",
     "hls.js": "^1.5.7",
     "html-react-parser": "^5.1.1",
+    "media-captions": "^0.0.18",
     "next": "^14.2.3",
     "nextjs-toploader": "^1.6.6",
     "popmotion": "^11.0.5",
@@ -32,6 +35,7 @@
     "swiper": "^11.0.6"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
     "@svgr/webpack": "^8.1.0",
     "@types/bad-words": "^3.0.3",
     "@types/node": "^20",

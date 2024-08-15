@@ -19,7 +19,7 @@ import DubbedCheckboxButton from '../AnimeEpisodesContainer/components/ActiveDub
 import { SourceType } from '@/app/ts/interfaces/episodesSourceInterface'
 
 export default function PlayBtn({ mediaId, mediaTitle, mediaFormat, anilistLastEpisodeWatched }: {
-    mediaId: number, mediaTitle: string, mediaFormat: string, anilistLastEpisodeWatched?: number
+    readonly mediaId: number, readonly mediaTitle: string, readonly mediaFormat: string, readonly anilistLastEpisodeWatched?: number
 }) {
 
     const [episodeId, setEpisodeId] = useState<string | null>("")
