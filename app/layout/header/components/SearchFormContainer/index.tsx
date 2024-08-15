@@ -61,7 +61,7 @@ function SearchFormContainer() {
 
         setIsLoading(true)
 
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_NEXT_ROUTE_HANDLER_API}?title=${value}`)
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_NEXT_ROUTE_HANDLER_API ?? 'https://chiaser-anime.vercel.app/api/animes-database'}?title=${value}`)
 
         setSearchResultsList(data.data as MediaDbOffline[])
 

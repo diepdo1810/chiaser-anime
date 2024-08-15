@@ -3,7 +3,7 @@ import Axios from "axios"
 import axiosRetry from "axios-retry"
 import { cache } from "react"
 
-const CONSUMET_API_URL = process.env.NEXT_PUBLIC_CONSUMET_API_URL
+const CONSUMET_API_URL = process.env.NEXT_PUBLIC_CONSUMET_API_URL ?? 'https://api-consumet-org-gamma-ochre.vercel.app'
 
 // HANDLES SERVER ERRORS, most of time when server was not running due to be using the Free Tier
 axiosRetry(Axios, {

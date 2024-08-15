@@ -3,7 +3,7 @@ import Axios from "axios";
 import axiosRetry from "axios-retry";
 import { cache } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_ANIWATCH_API_URL
+const BASE_URL = process.env.NEXT_PUBLIC_ANIWATCH_API_URL ?? 'https://aniwatch-api-zeta.vercel.app'
 
 // HANDLES SERVER ERRORS, most of time when server was not running due to be using the Free Tier
 axiosRetry(Axios, {

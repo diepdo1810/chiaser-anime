@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     try {
 
         const anilistTokenData: { accessToken: string, tokenType: string, expiresIn: string } = await request.json()
+        console.log(anilistTokenData)
 
         if (!anilistTokenData) return NextResponse.json({
             "message": "No Token Received"

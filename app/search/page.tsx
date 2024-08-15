@@ -29,7 +29,7 @@ async function SearchPage({ searchParams }: { searchParams: SearchPageTypes }) {
 
     const isMobile = checkDeviceIsMobile(headers())
 
-    const OFFLINE_ANIME_DATABASE = process.env.NEXT_PUBLIC_NEXT_ROUTE_HANDLER_API
+    const OFFLINE_ANIME_DATABASE = process.env.NEXT_PUBLIC_NEXT_ROUTE_HANDLER_API ?? 'https://chiaser-anime.vercel.app/api/animes-database'
 
     const sortedMedias = await axios.get(`${OFFLINE_ANIME_DATABASE}?${Object.entries(searchParams).map(e => e.join('=')).join('&')}`).then(res => res.data)
 
