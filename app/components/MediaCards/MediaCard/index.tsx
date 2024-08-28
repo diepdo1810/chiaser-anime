@@ -134,6 +134,7 @@ export function MediaImgLink({ url, mediaId, formatOrType, title, mediaInfo, hid
 
 }
 
+
 export function SmallTag({ seasonYear, tags }: { seasonYear: number, tags: string }) {
 
     return (
@@ -160,6 +161,58 @@ export function Title({ title }: { title: string }) {
 
     return (
         <p className={styles.title_variant}>{title}</p>
+    )
+
+}
+
+export function MediaImgLinkOmanga({ url, mediaId, formatOrType, title, mediaInfo, hideOptionsButton }: {
+    url: string, mediaId: number | string, formatOrType: string, title: string, mediaInfo: ApiDefaultResult, hideOptionsButton?: boolean
+}) {
+
+    return (
+        <>
+
+            <Link
+                id={styles.img_container}
+                href={`#`}
+            >
+                <Image
+                    src={url}
+                    placeholder='blur'
+                    blurDataURL="https://upload.wikimedia.org/wikipedia/commons/8/8d/ERR0R_NO_IMAGE_FOUND.jpg"
+                    alt={`Cover Art for ${title || "Not Available"}`}
+                    fill
+                    sizes='(max-width: 520px) 45vw, (max-width: 772px) 33vw, (max-width: 1200px) 141px, 192px'
+                    title={title}
+                />
+
+                <MediaTypeIconSpan
+                    formatOrType={formatOrType}
+                />
+
+
+            </Link>
+
+            {!hideOptionsButton && (
+                <MediaActionOptionsButton
+                    mediaInfo={mediaInfo}
+                />
+            )}
+
+        </>
+    )
+
+}
+
+export function LinkTitleOmanga({ title, id, anilistId }: { title: string, id?: number, anilistId?: string }) {
+
+    return (
+        <Link
+            className={anilistId ? styles.disabled : ""}
+            href={`#`}
+        >
+            {title}
+        </Link>
     )
 
 }

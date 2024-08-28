@@ -5,10 +5,10 @@ import ChevronDownIcon from '@/public/assets/chevron-down.svg'
 import Link from 'next/link'
 import AnimeNavListHover from './components/AnimeNavListHover'
 import MangaNavListHover from './components/MangaNavListHover'
+import MangaViNavListHover from './components/MangaViNavListHover'
 import UserSideMenu from './components/User/UserSideMenu'
 import MenuList from './components/MenuList'
 import SearchFormContainer from './components/SearchFormContainer'
-import NewsNavListHover from './components/NewsNavListHover'
 import NotificationsContainer from './components/Notifications'
 
 export const animesGenres = [
@@ -62,9 +62,9 @@ function Header() {
                             <MangaNavListHover />
                         </li>
                         <li className='display_flex_row align_items_center'>
-                            <Link href={'/news'}>News <ChevronDownIcon alt="Open News List" width={16} height={16} /></Link>
+                            MV <ChevronDownIcon alt="Open Mangas Vietnamese" width={16} height={16} />
 
-                            <NewsNavListHover />
+                            <MangaViNavListHover />
                         </li>
                         
                     </ul>
