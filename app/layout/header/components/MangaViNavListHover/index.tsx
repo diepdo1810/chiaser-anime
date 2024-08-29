@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import styles from './component.module.css'; // Đổi tên file CSS
-import omanga from '@/app/api/oManga'; // Import hàm getCategories
+import styles from './component.module.css';
+import omanga from '@/app/api/oManga';
 import Link from 'next/link';
 import ErrorPlaceholder from '../ErrorPlaceholder';
-import { MangaGenreResponse } from '@/app/ts/interfaces/apiOMangaDatainterfaace'
+import { MangaGenreResponse } from '@/app/ts/interfaces/apiOMangaDataInterface'
 
 const chunkArray = (array: MangaGenreResponse[], size: number) => {
     const result: MangaGenreResponse[][] = [];
@@ -27,7 +27,6 @@ function CategoryNavList() {
     const fetchCategories = async () => {
         try {
             const data = await omanga.getCategories() as MangaGenreResponse[];
-            console.log(data?.data.items);
             setCategories(data?.data.items);
         } catch (error) {
             console.error(error);
@@ -44,7 +43,6 @@ function CategoryNavList() {
     }
 
     const chunks = chunkArray(categories, chunkSize);
-    console.log(chunks);
 
     return (
         <ul id={styles.manga_header_nav_container}>

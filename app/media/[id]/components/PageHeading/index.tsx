@@ -10,7 +10,6 @@ export default function PageHeading({ mediaInfo, imdbMediaInfo, searchParams, im
 
     return (
         <React.Fragment>
-
             <HeadingInfo
                 mediaInfo={mediaInfo}
                 imdbMediaInfo={imdbMediaInfo}
@@ -22,7 +21,6 @@ export default function PageHeading({ mediaInfo, imdbMediaInfo, searchParams, im
                 mediaInfo={mediaInfo}
                 imdbEpisodes={imdbEpisodes}
             />
-
         </React.Fragment>
     )
 

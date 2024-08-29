@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import omanga from '@/app/api/oManga'; // Update with correct path
-import { MangaCategoryResponse } from '@/app/ts/interfaces/apiOMangaDatainterface'; // Update with correct path
+import { MangaCategoryResponse } from '@/app/ts/interfaces/apiOMangaDataInterface'; // Update with correct path
 import styles from './component.module.css'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import * as MediaCard from '@/app/components/MediaCards/MediaCard'
@@ -29,51 +29,59 @@ const framerMotionShowUp = {
 }
 
 const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
-  const [comics, setComics] = useState<MangaCategoryResponse['data']['items'] | null>(null);
+  const [comics, setComics] = useState<MangaCategoryResponse['data']['items']>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalLength, setTotalLength] = useState(0);
   const [currPageNumber, setCurrPageNumber] = useState(page);
+  const [showing, setShowing] = useState<string>('');
+  const defaultComics = '24';
 
   useEffect(() => {
     const fetchComics = async () => {
-      setLoading(true);
-      try {
-        const response = await omanga.getComicsByCategory({ slug, page });
-        if (response && response.data) {
-            setComics(response.data.items);
-            setTotalLength(response.data.params.pagination.totalItems);
-        } else {
-          setError('No comics found.');
+        setLoading(true);
+        try {
+            const response = await omanga.getComicsByCategory({ slug, page: currPageNumber });
+            if (response && response.data) {
+                setComics((prevComics) => currPageNumber === 1 
+                    ? response.data.items 
+                    : [...(prevComics || []), ...response.data.items]);
+                setTotalLength(response.data.params.pagination.totalItems);
+                setShowing(comics.length === 0 ? `${defaultComics}` : `${comics.length}`);
+            } else {
+                setError('No comics found.');
+            }
+        } catch (err) {
+            setError('An error occurred while fetching comics.');
+        } finally {
+            setLoading(false);
         }
-      } catch (err) {
-        setError('An error occurred while fetching comics.');
-      } finally {
-        setLoading(false);
-      }
     };
 
     fetchComics();
+
   }, [slug, currPageNumber]);
 
   const fetchNextResultPage = async () => {
-    setCurrPageNumber(currPageNumber + 1);
+        const nextPage = currPageNumber + 1;
 
-    try {
-        setLoading(true);
-        const response = await omanga.getComicsByCategory({ slug, page: currPageNumber + 1 });
-        if (response && response.data) {
-            setComics((prevComics) => [...(prevComics || []), ...response.data.items]);
-        } else {
-          setError('No more comics found.');
+        try {
+            setLoading(true);
+
+            const response = await omanga.getComicsByCategory({ slug, page: nextPage });
+
+            if (response && response.data) {
+                setComics((prevComics) => prevComics ? [...prevComics, ...response.data.items] : response.data.items);
+                setCurrPageNumber(nextPage);
+            } else {
+                setError('No more comics found.');
+            }
+        } catch (err) {
+            setError('An error occurred while fetching more comics.');
+        } finally {
+            setLoading(false);
         }
-      } catch (err) {
-        setError('An error occurred while fetching more comics.');
-      } finally {
-        setLoading(false);
-      }
-  };
-
+    };
 
   if (loading  && currPageNumber === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -90,40 +98,37 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
         )}
 
         {comics && comics.length > 0 && (
-        <div>
-            <AnimatePresence initial={true} mode="wait">
-                <motion.ul id={styles.results_container} initial="hidden" animate="visible" variants={framerMotionShowUp}>
-                    {comics.map((comic, key) => (
-                    <motion.li key={key} variants={framerMotionShowUp}>
-                        <MediaCard.Container onDarkMode>
-                            <MediaCard.MediaImgLinkOmanga
-                                hideOptionsButton={false}
-                                mediaInfo={comic as any}
-                                title={comic.name}
-                                formatOrType="MANGA"
-                                url={omanga.getImageUrl(comic.thumb_url)}
-                                mediaId={''}
-                            />
+            <motion.div>
+                <AnimatePresence initial={true} mode="wait">
+                    <motion.ul id={styles.results_container} initial="hidden" animate="visible" variants={framerMotionShowUp} >
+                        {comics.map((comic, key) => (
+                        <motion.li key={comic._id} variants={framerMotionShowUp}>
+                            <MediaCard.Container onDarkMode>
+                                <MediaCard.MediaImgLinkOmanga
+                                    hideOptionsButton={false}
+                                    mediaInfo={comic as any}
+                                    title={comic.name}
+                                    formatOrType="MANGA"
+                                    url={omanga.getImageUrl(comic.thumb_url)}
+                                    mediaId={comic.slug}
+                                />
 
-                            <MediaCard.SmallTag
-                                seasonYear={2021}
-                                tags={comic.category[0].name}
-                            />
+                                <MediaCard.SmallTag
+                                    seasonYear={new Date(comic.updatedAt).getFullYear()}
+                                    tags={comic.status}
+                                />
 
-                            <MediaCard.LinkTitleOmanga
-                                title={comic.name}
-                            />
+                                <MediaCard.LinkTitleOmanga
+                                    title={comic.name}
+                                />
 
-                        </MediaCard.Container>
-                    </motion.li>
-                    ))}
-                </motion.ul>
-            </AnimatePresence>
-        </div>
+                            </MediaCard.Container>
+                        </motion.li>
+                        ))}
+                    </motion.ul>
+                </AnimatePresence>
+            </motion.div>
         )}
-
-
-
 
         {comics && totalLength > comics.length * currPageNumber && (
         <button
@@ -134,16 +139,18 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
         </button>
         )}
 
+        {comics && comics.length > 0 && (
+            <span>
+                Showing {(totalLength <= comics.length * currPageNumber) ? 'all ' : showing + ' out of '}
+                <span>{totalLength.toLocaleString('en-US')}</span> results
+            </span>
+        )}
+
         <span style={{fontSize: 'var(--font-size--small-2)' }}>
             Last Update: {new Date().toLocaleDateString('en-us', { day: 'numeric', month: 'long', year: 'numeric' })}
         </span>
 
-        {comics && comics.length > 0 && (
-        <span>
-            Showing {(totalLength <= comics.length * currPageNumber) ? 'all ' : `${comics.length * currPageNumber} out of `}
-            <span>{totalLength.toLocaleString('en-US')}</span> results
-        </span>
-        )}
+
   </div>
 
   );

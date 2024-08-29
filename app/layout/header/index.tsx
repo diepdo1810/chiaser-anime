@@ -4,7 +4,6 @@ import Image from 'next/image'
 import ChevronDownIcon from '@/public/assets/chevron-down.svg'
 import Link from 'next/link'
 import AnimeNavListHover from './components/AnimeNavListHover'
-import MangaNavListHover from './components/MangaNavListHover'
 import MangaViNavListHover from './components/MangaViNavListHover'
 import UserSideMenu from './components/User/UserSideMenu'
 import MenuList from './components/MenuList'
@@ -59,14 +58,8 @@ function Header() {
                         <li className='display_flex_row align_items_center'>
                             Mangas <ChevronDownIcon alt="Open Mangas List" width={16} height={16} />
 
-                            <MangaNavListHover />
-                        </li>
-                        <li className='display_flex_row align_items_center'>
-                            MV <ChevronDownIcon alt="Open Mangas Vietnamese" width={16} height={16} />
-
                             <MangaViNavListHover />
                         </li>
-                        
                     </ul>
                 </div>
 

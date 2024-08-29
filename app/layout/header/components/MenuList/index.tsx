@@ -1,12 +1,14 @@
 "use client"
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from "./component.module.css"
 import MenuListSvg from '@/public/assets/list.svg'
 import ChevronUpIcon from '@/public/assets/chevron-up.svg'
 import ChevronDownIcon from '@/public/assets/chevron-down.svg'
 import { AnimatePresence, motion } from 'framer-motion'
 import { animesGenres } from '../../index'
+import { MangaGenreResponse } from '@/app/ts/interfaces/apiOMangaDataInterface'
+import omanga from '@/app/api/oManga';
 
 const framerMotionShowUpMotion = {
 
@@ -34,6 +36,20 @@ function MenuList() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
     const [isListOneExpanded, setIsListOneExpanded] = useState<boolean>(false)
     const [isListTwoExpanded, setIsListTwoExpanded] = useState<boolean>(false)
+    const [categories, setCategories] = useState<MangaGenreResponse[] | null>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await omanga.getCategories() as MangaGenreResponse[];
+                setCategories(data?.data.items);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     return (
         <div id={styles.menu_container}>
@@ -106,48 +122,14 @@ function MenuList() {
                                 </h5>
 
                                 <ul data-visible={isListTwoExpanded}>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&sort=trending_desc`}>
-                                            Trending
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&sort=releases_desc`}>
-                                            Lastest Releases
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&genre=[shounen]`}>
-                                            Shounen
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&genre=[drama]`}>
-                                            Genre: Drama
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&genre=[slice-of-life]`}>
-                                            Genre: Slice of Life
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&genre=[comedy]`}>
-                                            Genre: Comedy
-                                        </Link>
-                                    </li>
-                                    <li onClick={() => setIsMenuOpen(false)}>
-                                        <Link href={`/search?type=manga&sort=score_desc`}>
-                                            Highest Rated
-                                        </Link>
-                                    </li>
+                                    {categories?.map((category) => (
+                                        <li key={category._id} onClick={() => setIsMenuOpen(false)}>
+                                            <Link href={`/category/${category.slug}`}>
+                                                {category.name}
+                                            </Link>
+                                        </li>
+                                    ))}
                                 </ul>
-                            </li>
-
-                            <li role='menuitem' onClick={() => setIsMenuOpen(false)}>
-
-                                <Link href={`/news`}>News</Link>
-
                             </li>
                         </ul>
 

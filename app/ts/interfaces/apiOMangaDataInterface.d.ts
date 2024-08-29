@@ -65,3 +65,61 @@ export interface MangaCategoryResponse {
         params: ParamItem[];
     };
 }
+
+// apiOMangaDataInterface.d.ts
+
+export interface MangaItem {
+    _id: string;
+    name: string;
+    slug: string;
+    origin_name: string[];
+    content: string;
+    status: string;
+    thumb_url: string;
+    sub_docquyen: boolean;
+    author: string[];
+    category: {
+        id: string;
+        name: string;
+        slug: string;
+    }[];
+    chapters: any[];
+    updatedAt: string;
+}
+
+export interface MangaResponse {
+    status: string;
+    message: string;
+    data: {
+        seoOnPage: {
+            og_type: string;
+            titleHead: string;
+            seoSchema: {
+                "@context": string;
+                "@type": string;
+                name: string;
+                url: string;
+                image: string;
+                director: string;
+            };
+            descriptionHead: string;
+            og_image: string[];
+            updated_time: number;
+            og_url: string;
+        };
+        breadCrumb: {
+            name: string;
+            slug?: string;
+            position: number;
+            isCurrent?: boolean;
+        }[];
+        params: {
+            slug: string;
+            crawl_check_url: string;
+        };
+        item: MangaItem;
+        APP_DOMAIN_CDN_IMAGE: string;
+    };
+}
+
+  
