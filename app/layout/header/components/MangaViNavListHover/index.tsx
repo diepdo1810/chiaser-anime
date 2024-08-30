@@ -52,7 +52,7 @@ function CategoryNavList() {
                         <ul>
                             {chunk.map((category) => (
                                 <li key={category._id}>
-                                    <Link href={`/category/${category.slug}`}>
+                                    <Link href={`/ocategory/${category.slug}`}>
                                         {category.name}
                                     </Link>
                                 </li>

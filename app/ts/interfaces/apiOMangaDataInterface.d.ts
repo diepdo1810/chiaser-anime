@@ -122,4 +122,18 @@ export interface MangaResponse {
     };
 }
 
-  
+type ChapterImage = {
+    image_page: number;
+    image_file: string;
+};
+
+interface ChapterData {
+    domain_cdn: string;
+    chapter_path: string;
+    chapter_image: ChapterImage[];
+}
+
+interface ChaptersPagesProps {
+    chapterData: ChapterData;
+    initialPage?: number;
+}

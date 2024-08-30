@@ -124,7 +124,7 @@ function MenuList() {
                                 <ul data-visible={isListTwoExpanded}>
                                     {categories?.map((category) => (
                                         <li key={category._id} onClick={() => setIsMenuOpen(false)}>
-                                            <Link href={`/category/${category.slug}`}>
+                                            <Link href={`/ocategory/${category.slug}`}>
                                                 {category.name}
                                             </Link>
                                         </li>

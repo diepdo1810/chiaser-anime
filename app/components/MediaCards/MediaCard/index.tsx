@@ -174,7 +174,7 @@ export function MediaImgLinkOmanga({ url, mediaId, formatOrType, title, mediaInf
 
             <Link
                 id={styles.img_container}
-                href={`/omedia/${mediaId}`}
+                href={`/omanga/${mediaId}`}
             >
                 <Image
                     src={url}

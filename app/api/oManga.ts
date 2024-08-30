@@ -2,8 +2,9 @@ import Axios from "axios";
 import axiosRetry from "axios-retry";
 import { cache } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_OPHIM_API_URL;
-const IMAGE_URL = process.env.NEXT_PUBLIC_OPHIM_CDN_IMAGE_URL;
+const API_URL = process.env.NEXT_PUBLIC_OMANGA_API_URL;
+const IMAGE_URL = process.env.NEXT_PUBLIC_OMANGA_CDN_IMAGE_URL;
+const CDN_CHAPTER_URL = process.env.NEXT_PUBLIC_OMANGA_CDN_CHAPTER_URL;
 
 axiosRetry(Axios, {
     retries: 3,
@@ -83,6 +84,20 @@ export default {
     // image_url
     getImageUrl: (url: string) => {
         return `${IMAGE_URL}/${url}`;
-    }
+    },
 
+    fetchChapterDetails: cache(async (chapterApiUrl: string) => {
+        try {
+            const { data } = await Axios.get(chapterApiUrl);
+            return data;
+        } catch (error) {
+            console.error("Error fetching chapter details:", error);
+            return null;
+        }
+    }),
+
+    // get constant CDN_CHAPTER_URL
+    get CDN_CHAPTER_URL() {
+        return CDN_CHAPTER_URL;
+    },
 }

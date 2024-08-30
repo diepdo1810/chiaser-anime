@@ -6,9 +6,9 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import { MangaResponse } from "@/app/ts/interfaces/apiOMangaDataInterface";
 import parse from "html-react-parser";
-import PageHeading from "../components/PageHeading";
-import MangaChaptersContainer from "../components/MangaChaptersContainer";
-import RecomendManga from "../components/RecomendManga";
+import PageHeading from "./components/PageHeading";
+import MangaChaptersContainer from "./components/MangaChaptersContainer";
+import RecomendManga from "./components/RecomendManga";
 
 export async function generateMetadata({
   params,
@@ -16,7 +16,6 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   const { data } = (await omanga.getComicDetail(params.slug)) as MangaResponse;
-  console.log(data);
 
   return {
     title: `${data.item.name} | MangaProject`,

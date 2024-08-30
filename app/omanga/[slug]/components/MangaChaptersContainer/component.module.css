@@ -139,14 +139,22 @@
 
 /* CHAPTER ITEM RESULT */
 .chapter_container {
+
     background: var(--brand-dark-color);
     border: 1px solid var(--brand-color);
+
     display: grid;
+    grid-template-columns: 15% 70% 15%;
     align-items: center;
     justify-items: start;
 
 }
 
+@media(min-width: 1020px) {
+    .chapter_container {
+        grid-template-columns: 10% 80% 10%;
+    }
+}
 
 /* NO PAGES AVAILABLE */
 .chapter_container[data-disabled=true] {
@@ -181,22 +189,25 @@
 }
 
 .chapter_container .info_container {
+
     width: 100%;
+
     border-left: 2px solid var(--white-25);
+
     padding: 8px 0;
-    padding-left: 15px;
+    padding-left: 16px;
 
 }
 
 .chapter_container .info_container h3 {
 
-    font-size: 12px;
+    font-size: var(--font-size--p);
     font-weight: 500;
     color: var(--white-100);
 
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     overflow: hidden;
 
 }

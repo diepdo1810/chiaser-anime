@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/read/[id]/components/ChaptersPages/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/read/[id]/components/ChaptersPages/index.js", "app/oread/[id]/components/ChaptersPages/index.tsxx"],
   "exclude": ["node_modules"]
 }

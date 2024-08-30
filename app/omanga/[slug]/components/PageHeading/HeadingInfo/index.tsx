@@ -24,7 +24,7 @@ export default function HeadingInfo({ mangaInfo }: {
                         <ul>
                             {item.category.map((cat: any) => (
                                 <li key={cat.id}>
-                                    <Link href={`/category/${cat.slug}`}>
+                                    <Link href={`/ocategory/${cat.slug}`}>
                                         {cat.name}
                                     </Link>
                                 </li>

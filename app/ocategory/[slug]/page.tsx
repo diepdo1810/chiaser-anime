@@ -1,5 +1,5 @@
 import React from 'react';
-import MangaList from '@/app/category/components/MangaList'; // Update with correct path
+import MangaList from './components/MangaList'; // Update with correct path
 import styles from './page.module.css'
 
 interface PageProps {
