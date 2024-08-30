@@ -6,6 +6,7 @@ import { MangaCategoryResponse } from '@/app/ts/interfaces/apiOMangaDataInterfac
 import styles from './component.module.css'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import * as MediaCard from '@/app/components/MediaCards/MediaCard'
+import BreadCrumb from '../BreadCrumb';
 
 interface MangaListProps {
   slug: string;
@@ -35,6 +36,7 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
   const [totalLength, setTotalLength] = useState(0);
   const [currPageNumber, setCurrPageNumber] = useState(page);
   const [showing, setShowing] = useState<string>('');
+  const [items, setItems] = useState([]);
   const defaultComics = '24';
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
         try {
             const response = await omanga.getComicsByCategory({ slug, page: currPageNumber });
             if (response && response.data) {
+                setItems(response.data);
                 setComics((prevComics) => currPageNumber === 1 
                     ? response.data.items 
                     : [...(prevComics || []), ...response.data.items]);
@@ -88,8 +91,8 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
 
   return (
     <div id={styles.content_container}>
-        <div id={styles.heading_container}>
-        </div>
+        <BreadCrumb items={items.breadCrumb} />
+        <div id={styles.heading_container}></div>
 
         {comics && comics.length === 0 && (
         <div id={styles.error_text}>
@@ -99,6 +102,7 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
 
         {comics && comics.length > 0 && (
             <motion.div>
+
                 <AnimatePresence initial={true} mode="wait">
                     <motion.ul id={styles.results_container} initial="hidden" animate="visible" variants={framerMotionShowUp} >
                         {comics.map((comic, key) => (

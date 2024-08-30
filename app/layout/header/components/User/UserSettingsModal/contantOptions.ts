@@ -29,6 +29,7 @@ export const languagesOptions = [
     { name: "Thai", value: "Thai" },
     { name: "Turkish", value: "Turkish" },
     { name: "Ukrainian", value: "Ukrainian" },
+    { name: "Vietnamese", value: "Vietnamese" },
 
 ]
 
