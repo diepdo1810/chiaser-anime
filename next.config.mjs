@@ -31,7 +31,7 @@ const nextConfig = {
     ]
   },
   images: {
-    unoptimized: true, // set to TRUE due to vercel limit of image optimization
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

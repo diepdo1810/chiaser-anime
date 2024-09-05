@@ -1,63 +1,71 @@
 #manga_header_nav_container {
-    z-index: 2;
-    position: absolute;
-    top: 69px;
-    left: 0;
-    padding-top: 32px;
-    padding-bottom: 64px;
-    padding-left: 64px;
-    padding-right: 64px;
-    background-color: var(--black-100);
-    width: 100%;
+  z-index: 2;
+  position: absolute;
+  top: 69px;
+  left: 0;
+  padding-top: 32px;
+  padding-bottom: 64px;
+  padding-left: 64px;
+  padding-right: 64px;
+  background-color: var(--black-100);
+  width: 100%;
+}
+
+/* hover display: flex */
+#navbar_container > ul > li:hover > ul,
+#navbar_container > ul > li:hover > div {
+  display: flex !important;
 }
 
 #manga_header_nav_container > li {
-    max-width: var(--breakpoint-xxl);
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap; /* Cho phép các chunk cuộn xuống dòng tiếp theo nếu cần */
-    gap: 32px;
+  max-width: var(--breakpoint-xxl);
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
 }
 
 #manga_header_nav_container > li > div {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 #manga_header_nav_container #topics_container {
-    padding: 0 24px;
-    border-left: 1px solid var(--white-25);
-    border-right: 1px solid var(--white-25);
+  padding: 0 24px;
 }
 
 #manga_header_nav_container #topics_container ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px; /* Khoảng cách giữa các thể loại */
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 #manga_header_nav_container #topics_container li {
-    padding: 6px 12px; /* Padding cho mỗi thể loại */
-    background-color: var(--gray-100); /* Màu nền cho mỗi thể loại (tuỳ chọn) */
-    border-radius: 4px; /* Bo góc cho các mục (tuỳ chọn) */
+  padding: 6px 12px;
+  background-color: var(--gray-100);
+  border-radius: 4px;
 }
 
 #manga_header_nav_container #topics_container li a {
-    text-decoration: none;
-    color: var(--white-100);
-    font-size: var(--font-size--small-1);
-    font-weight: 600;
+  text-decoration: none;
+  color: var(--white-100);
+  font-size: var(--font-size--small-1);
+  font-weight: 600;
 }
 
 #manga_header_nav_container #topics_container li a:hover {
-    color: var(--brand-color);
+  color: var(--brand-color);
 }
 
 #manga_card_container p,
 #manga_card_container p p {
-    font-size: var(--font-size--small-2);
+  font-size: var(--font-size--small-2);
+}
+
+#manga_card_container h5 {
+  margin-bottom: 8px;
 }
