@@ -17,7 +17,7 @@ import { checkDeviceIsMobile } from "./lib/checkMobileOrDesktop";
 import { cookies, headers } from "next/headers";
 import KeepWatchingSection from "./components/HomePage/KeepWatchingSection";
 import PopularMediaSection from "./components/HomePage/PopularMediaSection";
-import BestRatedMangas from "./components/HomePage/oNavigationThroughMedias";
+import ONavigationThroughMedias from "./components/HomePage/ONavigationThroughMedias";
 
 export const revalidate = 21600; // revalidate cached data every 6 hours
 
@@ -207,10 +207,19 @@ export default async function Home() {
       <section
         className={`${styles.medias_sections_container} ${styles.dark_background}`}
       >
-        <BestRatedMangas
-          headingTitle="Best Rated Mangas"
-          route={"#"}
-          sortBy={"UPDATED_AT_DESC"}
+        <ONavigationThroughMedias
+          headingTitle="Coming soon"
+          type="sap-ra-mat"
+          onDarkBackground
+        />
+      </section>
+
+      <section
+        className={`${styles.medias_sections_container}`}
+      >
+        <ONavigationThroughMedias
+          headingTitle="News Mangas"
+          type="truyen-moi"
           isLayoutInverted
         />
       </section>

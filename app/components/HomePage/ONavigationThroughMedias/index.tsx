@@ -8,21 +8,16 @@ import styles from "./component.module.css";
 import { MangaItem } from "@/app/ts/interfaces/apiOMangaDataInterface";
 import * as MediaCard from "../../MediaCards/MediaCard";
 import * as MediaCardClientSide from "../../MediaCards/MediaCard/variantClientSide";
-import { Url } from "next/dist/shared/lib/router/router";
 import CloseSvg from "@/public/assets/x.svg";
 import Image from "next/image";
 import Link from "next/link";
-import * as AddToFavourites from "../../Buttons/AddToFavourites";
 
-interface BestRatedMangasProps {
+interface ONavigationThroughMediasProps {
   headingTitle: string;
-  route: Url;
-  sortBy: "RELEASE" | "FAVOURITES_DESC" | "UPDATED_AT_DESC";
-  mediaFormat?: "ANIME" | "MANGA";
+  type: string | undefined;
   isFetchByDateButtonsOnScreen?: boolean;
   onDarkBackground?: boolean;
   isLayoutInverted?: boolean;
-  isResultsSortedByTrending?: boolean;
 }
 
 const framerMotionPopUpMedia = {
@@ -37,9 +32,12 @@ const framerMotionPopUpMedia = {
   },
 };
 
-const BestRatedMangas: React.FC<BestRatedMangasProps> = ({
+const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
+  headingTitle,
+  type,
   onDarkBackground,
   isLayoutInverted,
+  isFetchByDateButtonsOnScreen,
 }) => {
   const [mangaList, setMangaList] = useState<MangaItem[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -50,7 +48,7 @@ const BestRatedMangas: React.FC<BestRatedMangasProps> = ({
   useEffect(() => {
     async function fetchMangas() {
       const result = await oManga.getComicsByType({
-        type: "truyen-moi",
+        type: type ?? 'truyen-moi',
         page: 1,
       });
       console.log(result.data.items);
@@ -76,49 +74,52 @@ const BestRatedMangas: React.FC<BestRatedMangasProps> = ({
   }
 
   return (
-    <motion.div
-      id={styles.itens_container}
-      data-darkBackground={onDarkBackground}
-      data-layoutInverted={isLayoutInverted}
-      variants={framerMotionPopUpMedia}
-      initial="initial"
-      animate="animate"
-    >
-      <SwiperCarousel title="Best Rated Mangas" daysSelected={0}>
-        {mangaList.length > 0 ? (
-          mangaList.map((manga) => (
-            <SwiperSlide key={manga._id}>
-              <MediaCardClientSide.FramerMotionContainer
-                positionIndex={mangaList.indexOf(manga) + 1}
-                isLoading={false}
-                framerMotionProps={{
-                  layoutId: String(manga._id),
-                  mediaId: Number(manga._id),
-                  framerMotionExpandCardFunction: () =>
-                    handleMediaPopUpFocus(manga._id),
-                }}
-              >
-                <MediaCard.MediaImg
-                  hideOptionsButton={false}
-                  mediaInfo={manga as any}
-                  title={manga.name}
-                  formatOrType={manga.category[0]?.name || ""}
-                  url={oManga.getImageUrl(manga.thumb_url)}
-                />
+    <React.Fragment>
+      <motion.div
+        id={styles.itens_container}
+        data-darkBackground={onDarkBackground}
+        data-layoutInverted={isLayoutInverted}
+        variants={framerMotionPopUpMedia}
+        initial="initial"
+        animate="animate"
+      >
+        <SwiperCarousel title={headingTitle} daysSelected={0}>
+          {mangaList.length > 0 ? (
+            mangaList.map((manga) => (
+              <SwiperSlide key={manga._id}>
+                <MediaCardClientSide.FramerMotionContainer
+                  positionIndex={mangaList.indexOf(manga) + 1}
+                  isLoading={false}
+                  framerMotionProps={{
+                    layoutId: String(manga._id),
+                    mediaId: Number(manga._id),
+                    framerMotionExpandCardFunction: () =>
+                      handleMediaPopUpFocus(manga._id),
+                  }}
+                >
+                  <MediaCard.MediaImg
+                    hideOptionsButton={false}
+                    mediaInfo={manga as any}
+                    title={manga.name}
+                    formatOrType={manga.category[0]?.name || ""}
+                    url={oManga.getImageUrl(manga.thumb_url)}
+                  />
 
-                <MediaCard.SmallTag
-                  seasonYear={new Date(manga.updatedAt).getFullYear()}
-                  tags={manga.category[0]?.name || ""}
-                />
+                  <MediaCard.SmallTag
+                    seasonYear={new Date(manga.updatedAt).getFullYear()}
+                    tags={manga.category[0]?.name || ""}
+                  />
 
-                <MediaCard.Title title={manga.name} />
-              </MediaCardClientSide.FramerMotionContainer>
-            </SwiperSlide>
-          ))
-        ) : (
-          <p>No mangas found</p>
-        )}
-      </SwiperCarousel>
+                  <MediaCard.Title title={manga.name} />
+                </MediaCardClientSide.FramerMotionContainer>
+              </SwiperSlide>
+            ))
+          ) : (
+            <p>No mangas found</p>
+          )}
+        </SwiperCarousel>
+      </motion.div>
+
       <AnimatePresence>
         {selectedId && mediaSelected && (
           <motion.div
@@ -189,8 +190,8 @@ const BestRatedMangas: React.FC<BestRatedMangasProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </React.Fragment>
   );
 };
 
-export default BestRatedMangas;
+export default ONavigationThroughMedias;
