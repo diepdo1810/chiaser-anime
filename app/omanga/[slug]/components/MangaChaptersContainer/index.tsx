@@ -6,7 +6,7 @@ import { MangaItem } from "@/app/ts/interfaces/apiOMangaDataInterface";
 import omanga from "@/app/api/oManga";
 import { AnimatePresence, motion } from "framer-motion";
 import BookSvg from "@/public/assets/book.svg";
-import PaginationButtons from '@/app/omanga/[slug]/components/PaginationButtons';
+import PaginationButtons from "@/app/omanga/[slug]/components/PaginationButtons";
 
 const framerMotionLoadingChapters = {
   initial: {
@@ -75,10 +75,11 @@ function MangaChaptersContainer({ manga }: { manga: MangaItem }) {
 
   function handleButtonPageNavigation(event: { selected: number }) {
     setIsLoading(true);
-    const newOffset = event.selected * rangeChaptersPerPage % chaptersList.length;
+    const newOffset =
+      (event.selected * rangeChaptersPerPage) % chaptersList.length;
     setItemOffset(newOffset);
     setCurrActivePage(event.selected);
-    setTimeout(() => setIsLoading(false), 400); 
+    setTimeout(() => setIsLoading(false), 400);
   }
 
   return (
@@ -98,23 +99,39 @@ function MangaChaptersContainer({ manga }: { manga: MangaItem }) {
           )}
 
           {!isLoading &&
-            currMangasList.map((chapter, key) => (
-              <motion.li
-                key={key}
-                title={`Chapter ${chapter.chapter_name} - ${manga.name}`}
-                variants={framerMotionShowUpChapters}
-                className={styles.chapter_container}
-              >
-                <div className={styles.icon_container}>
-                  <BookSvg alt="Book Opened Icon" width={16} heighy={16} />
-                </div>
-                <Link href={`/oread/${chapter.chapter_api_data.split('/').pop()}?slug=${manga.slug}`}>
-                  <div className={styles.info_container}>
-                    <h3>{`Chapter ${chapter.chapter_name}: ${chapter.chapter_title !== '' ? chapter.chapter_title : manga.name}`}</h3>
+            currMangasList.map((chapter, key) => {
+              // check duplicate chapter name
+              if (
+                chapter.chapter_name === currMangasList[key - 1]?.chapter_name
+              ) {
+                return null;
+              }
+              return (
+                <motion.li
+                  key={key}
+                  title={`Chapter ${chapter.chapter_name} - ${manga.name}`}
+                  variants={framerMotionShowUpChapters}
+                  className={styles.chapter_container}
+                >
+                  <div className={styles.icon_container}>
+                    <BookSvg alt="Book Opened Icon" width={16} heighy={16} />
                   </div>
-                </Link>
-              </motion.li>
-            ))}
+                  <Link
+                    href={`/oread/${chapter.chapter_api_data
+                      .split("/")
+                      .pop()}?slug=${manga.slug}`}
+                  >
+                    <div className={styles.info_container}>
+                      <h3>{`Chapter ${chapter.chapter_name}: ${
+                        chapter.chapter_title !== ""
+                          ? chapter.chapter_title
+                          : manga.name
+                      }`}</h3>
+                    </div>
+                  </Link>
+                </motion.li>
+              );
+            })}
 
           {!isLoading && currMangasList.length === 0 && (
             <span>No chapters available.</span>

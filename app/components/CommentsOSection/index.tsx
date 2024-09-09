@@ -15,49 +15,43 @@ import {
 import { initFirebase } from "@/app/firebaseApp";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  ApiDefaultResult,
-  ApiMediaResults,
-} from "@/app/ts/interfaces/apiAnilistDataInterface";
 import CommentContainer from "./components/CommentContainer";
 import SvgLoading from "@/public/assets/ripple-1s-200px.svg";
 import SvgFilter from "@/public/assets/filter-right.svg";
-import ShowUpLoginPanelAnimated from "../UserLoginModal/animatedVariant";
 import WriteCommentFormContainer from "./components/WriteCommentForm";
 import { useAppDispatch, useAppSelector } from "@/app/lib/redux/hooks";
 import { UserComment } from "@/app/ts/interfaces/firestoreDataInterface";
 import { toggleShowLoginModalValue } from "@/app/lib/redux/features/loginModal";
+import { MangaResponse } from "@/app/ts/interfaces/apiOMangaDataInterface";
 
 type CommentsSectionTypes = {
-  mediaInfo: ApiMediaResults | ApiDefaultResult;
-  isOnWatchPage?: boolean;
-  episodeId?: string;
-  episodeNumber?: number;
+  mangaInfo: MangaResponse["data"]["item"];
+  mangaSlug: string;
+  isOnReadPage?: boolean;
+  chapterId?: string;
+  chapterNumber?: number;
 };
 
 export default function CommentsSection({
-  mediaInfo,
-  isOnWatchPage,
-  episodeId,
-  episodeNumber,
+  mangaInfo,
+  mangaSlug,
+  isOnReadPage,
+  chapterId,
+  chapterNumber,
 }: CommentsSectionTypes) {
   const [commentsList, setCommentsList] = useState<DocumentData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [commentsSliceRange, setCommentsSliceRange] = useState<number>(3);
 
-  const anilistUser = useAppSelector((state) => state.UserInfo.value);
   const dispatch = useAppDispatch();
-
   const auth = getAuth();
-
   const [user] = useAuthState(auth);
 
   const db = getFirestore(initFirebase());
 
   useEffect(() => {
-    getCommentsForCurrMedia();
-  }, [mediaInfo, user, anilistUser, episodeId]);
+    getCommentsForManga();
+  }, [mangaInfo, user, chapterId]);
 
   function handleCommentsSliceRange() {
     setCommentsSliceRange(commentsSliceRange + 10);
@@ -69,7 +63,7 @@ export default function CommentsSection({
   ) {
     setIsLoading(true);
 
-    if (!commentsUnsorted) commentsUnsorted = await getCommentsForCurrMedia();
+    if (!commentsUnsorted) commentsUnsorted = await getCommentsForManga();
 
     let sortedComments;
 
@@ -79,13 +73,11 @@ export default function CommentsSection({
           (x, y) => y.createdAt - x.createdAt
         );
         setCommentsList(sortedComments);
-
         break;
 
       case "likes":
         sortedComments = commentsUnsorted!.sort((x, y) => y.likes - x.likes);
         setCommentsList(sortedComments);
-
         break;
 
       case "dislikes":
@@ -93,7 +85,6 @@ export default function CommentsSection({
           (x, y) => y.dislikes - x.dislikes
         );
         setCommentsList(sortedComments);
-
         break;
 
       default:
@@ -101,84 +92,80 @@ export default function CommentsSection({
           (x, y) => y.createdAt - x.createdAt
         );
         setCommentsList(sortedComments);
-
         break;
     }
 
     setIsLoading(false);
   }
 
-  async function getCommentsForCurrMedia() {
+  async function getCommentsForManga() {
     setIsLoading(true);
 
-    let mediaComments = await getDocs(
+    let mangaComments = await getDocs(
       collection(
         db,
         "comments",
-        `${mediaInfo.id}`,
-        isOnWatchPage ? `${episodeId}` : "all"
+        `${mangaInfo._id}`,  // Lấy theo manga ID từ oManga
+        isOnReadPage ? `${chapterId}` : "all"
       )
     );
 
-    if (!mediaComments) {
-      await setDoc(doc(db, "comments", `${mediaInfo.id}`), {});
-
-      mediaComments = await getDocs(
+    if (!mangaComments) {
+      await setDoc(doc(db, "comments", `${mangaInfo._id}`), {});
+      mangaComments = await getDocs(
         collection(
           db,
           "comments",
-          `${mediaInfo.id}`,
-          isOnWatchPage ? `${episodeId}` : "all"
+          `${mangaInfo._id}`,
+          isOnReadPage ? `${chapterId}` : "all"
         )
       );
-
       return;
     }
 
-    if (isOnWatchPage) {
-      let commentsForCurrEpisode: DocumentData[] = [];
+    if (isOnReadPage) {
+      let commentsForCurrChapter: DocumentData[] = [];
 
-      const queryCommentsToThisEpisode = query(
-        collection(db, "comments", `${mediaInfo.id}`, "all"),
-        where("episodeNumber", "==", episodeNumber)
+      const queryCommentsForChapter = query(
+        collection(db, "comments", `${mangaInfo._id}`, "all"),
+        where("chapterNumber", "==", chapterNumber)
       );
 
-      const querySnapshot = await getDocs(queryCommentsToThisEpisode);
+      const querySnapshot = await getDocs(queryCommentsForChapter);
 
       querySnapshot.docs.forEach((doc) =>
-        commentsForCurrEpisode.push(doc.data())
+        commentsForCurrChapter.push(doc.data())
       );
 
-      await handleCommentsSortBy("date", commentsForCurrEpisode);
-
+      await handleCommentsSortBy("date", commentsForCurrChapter);
       return;
     }
 
-    const mediaCommentsMapped = mediaComments.docs.map(
+    const mangaCommentsMapped = mangaComments.docs.map(
       (doc: QueryDocumentSnapshot) => doc.data()
     );
 
-    await handleCommentsSortBy("date", mediaCommentsMapped);
+    await handleCommentsSortBy("date", mangaCommentsMapped);
 
     setIsLoading(false);
 
-    return mediaCommentsMapped;
+    return mangaCommentsMapped;
   }
 
   return (
     <div id={styles.container}>
       <WriteCommentFormContainer
         isLoadingHook={isLoading}
-        loadComments={getCommentsForCurrMedia}
-        mediaInfo={mediaInfo}
+        loadComments={getCommentsForManga}
+        mediaInfo={{
+          id: mangaInfo._id,
+          title: mangaInfo.title,
+          coverImage: mangaInfo.coverImage,
+        }}
         setIsLoadingHook={setIsLoading}
         setIsUserModalOpenHook={() => dispatch(toggleShowLoginModalValue())}
-        episodeId={episodeId}
-        episodeNumber={episodeNumber}
-        isOnWatchPage={isOnWatchPage}
       />
 
-      {/* ALL COMMENTS FROM DB FOR THIS MEDIA */}
       <div id={styles.all_comments_container}>
         {commentsList.length > 0 && (
           <React.Fragment>
@@ -186,14 +173,13 @@ export default function CommentsSection({
               {commentsList.length > 1 && (
                 <div id={styles.custom_select}>
                   <SvgFilter width={16} height={16} alt="Filter" />
-
                   <select
                     onChange={(e) =>
                       handleCommentsSortBy(
                         e.target.value as "date" | "likes" | "dislikes"
                       )
                     }
-                    title="Choose How To Sort The Comments"
+                    title="Sort comments"
                   >
                     <option selected value="date">
                       Most Recent
@@ -218,17 +204,18 @@ export default function CommentsSection({
                     <CommentContainer
                       key={comment.createdAt}
                       comment={comment as UserComment}
-                      mediaId={mediaInfo.id}
+                      mediaId={Number(mangaInfo._id)}
                       isLoadingHook={isLoading}
-                      loadComments={getCommentsForCurrMedia}
-                      mediaInfo={mediaInfo}
+                      loadComments={getCommentsForManga}
                       setIsLoadingHook={setIsLoading}
                       setIsUserModalOpenHook={() =>
                         dispatch(toggleShowLoginModalValue())
                       }
-                      episodeId={episodeId}
-                      episodeNumber={episodeNumber}
-                      isOnWatchPage={isOnWatchPage}
+                      mediaInfo={{
+                        id: mangaInfo._id,
+                        title: mangaInfo.title,
+                        coverImage: mangaInfo.coverImage,
+                      }}
                     />
                   ))}
             </ul>
@@ -247,7 +234,7 @@ export default function CommentsSection({
           </div>
         )}
 
-        {commentsList.length == 0 && !isLoading && (
+        {commentsList.length === 0 && !isLoading && (
           <div id={styles.no_comments_container}>
             <p>No Comments Yet</p>
           </div>

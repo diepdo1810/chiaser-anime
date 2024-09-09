@@ -28,6 +28,7 @@ export interface MangaChapters {
     volumeNumber: string,
     title: string,
     pages: number,
+    name: string
 
 }
 

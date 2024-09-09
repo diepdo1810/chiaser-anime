@@ -137,3 +137,12 @@ interface ChaptersPagesProps {
     chapterData: ChapterData;
     initialPage?: number;
 }
+
+export interface MangaChapters {
+    id: string,
+    chapterNumber: string,
+    volumeNumber: string,
+    title: string,
+    pages: number,
+    name: string
+}

@@ -183,7 +183,7 @@ export default async function Home() {
       </section>
 
       {/* SECTION => SHOWS MEDIAS SORTED BY FAVOURITES */}
-      <section
+      {/* <section
         className={`${styles.medias_sections_container} ${styles.dark_background}`}
       >
         <NavigationThroughMedias
@@ -192,17 +192,17 @@ export default async function Home() {
           sortBy={"FAVOURITES_DESC"}
           onDarkBackground
         />
-      </section>
+      </section> */}
 
       {/* SECTION => SHOWS MEDIAS SORTED BY LATEST UPDATES ON ANILIST */}
-      <section className={`${styles.medias_sections_container}`}>
+      {/* <section className={`${styles.medias_sections_container}`}>
         <NavigationThroughMedias
           headingTitle={"Show Me Something New"}
           route={"#"}
           sortBy={"UPDATED_AT_DESC"}
           isLayoutInverted
         />
-      </section>
+      </section> */}
 
       <section
         className={`${styles.medias_sections_container} ${styles.dark_background}`}
@@ -220,6 +220,26 @@ export default async function Home() {
         <ONavigationThroughMedias
           headingTitle="News Mangas"
           type="truyen-moi"
+          isLayoutInverted
+        />
+      </section>
+
+      <section
+        className={`${styles.medias_sections_container} ${styles.dark_background}`}
+      >
+        <ONavigationThroughMedias
+          headingTitle="New Releases"
+          type="dang-phat-hanh"
+          onDarkBackground
+        />
+      </section>
+
+      <section
+        className={`${styles.medias_sections_container}`}
+      >
+        <ONavigationThroughMedias
+          headingTitle="Completed"
+          type="hoan-thanh"
           isLayoutInverted
         />
       </section>

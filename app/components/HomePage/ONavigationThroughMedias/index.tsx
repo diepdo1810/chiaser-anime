@@ -59,7 +59,6 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
   }, []);
 
   function handleMediaPopUpFocus(media: string | null) {
-    console.log(media);
     if (media) {
       setSelectedId(media);
       setMediaSelected(
@@ -178,12 +177,12 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
               </motion.div>
 
               <motion.div className={styles.description_container}>
-                <motion.p>{mediaSelected.status}</motion.p>
+                <motion.p>{mediaSelected.origin_name}</motion.p>
               </motion.div>
 
               <motion.div className={styles.btns_container}>
                 <motion.div className={`${styles.action_btns_container}`}>
-                  <Link href={`/media/${mediaSelected._id}`}>SEE MORE</Link>
+                  <Link href={`/omanga/${mediaSelected.slug}`}>SEE MORE</Link>
                 </motion.div>
               </motion.div>
             </motion.div>

@@ -9,6 +9,7 @@ import parse from "html-react-parser";
 import PageHeading from "./components/PageHeading";
 import MangaChaptersContainer from "./components/MangaChaptersContainer";
 import RecomendManga from "./components/RecomendManga";
+import CommentsOSection from "@/app/components/CommentsOSection";
 
 export async function generateMetadata({
   params,
@@ -89,6 +90,16 @@ export default async function MangaPage({
               </div>
             )}
           </div>
+
+          {/* COMMENTS SECTION */}
+          <section id={styles.comments_container}>
+            <h2 className={styles.heading_style}>COMMENTS</h2>
+
+            <CommentsOSection
+              mangaInfo={manga} // Dữ liệu manga từ API oManga
+              mangaSlug={params.slug} // Đường dẫn slug
+            />
+          </section>
         </section>
       </div>
     </main>
