@@ -109,7 +109,7 @@ const MangaList: React.FC<MangaListProps> = ({ slug, page = 1 }) => {
                         <motion.li key={comic._id} variants={framerMotionShowUp}>
                             <MediaCard.Container onDarkMode>
                                 <MediaCard.MediaImgLinkOmanga
-                                    hideOptionsButton={false}
+                                    hideOptionsButton
                                     mediaInfo={comic as any}
                                     title={comic.name}
                                     formatOrType="MANGA"

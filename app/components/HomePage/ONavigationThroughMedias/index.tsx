@@ -11,7 +11,7 @@ import * as MediaCardClientSide from "../../MediaCards/MediaCard/variantClientSi
 import CloseSvg from "@/public/assets/x.svg";
 import Image from "next/image";
 import Link from "next/link";
-
+import * as AddToFavourites from "../../Buttons/AddOToFavourites";
 interface ONavigationThroughMediasProps {
   headingTitle: string;
   type: string | undefined;
@@ -183,6 +183,10 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
               <motion.div className={styles.btns_container}>
                 <motion.div className={`${styles.action_btns_container}`}>
                   <Link href={`/omanga/${mediaSelected.slug}`}>SEE MORE</Link>
+                  <AddToFavourites.Button
+                    svgOnlyColor={"var(--brand-color"}
+                    mediaInfo={mediaSelected}
+                  />
                 </motion.div>
               </motion.div>
             </motion.div>

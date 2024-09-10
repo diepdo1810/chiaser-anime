@@ -10,8 +10,9 @@ import * as MediaCard from "@/app/components/MediaCards/MediaCard";
 import SvgLoading from "@/public/assets/Eclipse-1s-200px.svg";
 import { useAppDispatch, useAppSelector } from "@/app/lib/redux/hooks";
 import { BookmarkItem } from "@/app/ts/interfaces/firestoreDataInterface";
-import { ApiDefaultResult } from "@/app/ts/interfaces/apiAnilistDataInterface";
+import { MangaItem } from "@/app/ts/interfaces/apiOMangaDataInterface"; // Thay ApiDefaultResult bằng MangaItem
 import { toggleShowLoginModalValue } from "@/app/lib/redux/features/loginModal";
+import oManga from "@/app/api/oManga";
 
 function PlaylistItemsResults({
   params,
@@ -121,7 +122,7 @@ function PlaylistItemsResults({
           <SvgLoading width={120} height={120} style={{ margin: "auto" }} />
         </div>
       )}
-
+      
       {!loading && (
         <div id={styles.container}>
           <ul>
@@ -132,41 +133,35 @@ function PlaylistItemsResults({
 
             {params
               ? userFilteredBookmarks.length > 0 &&
-                userFilteredBookmarks.map((media, key) => (
-                  <li key={key}>
+                userFilteredBookmarks.map((media) => (
+                  <li key={media.id}>
                     <MediaCard.Container onDarkMode>
-                      <MediaCard.MediaImgLink
+                      <MediaCard.MediaImgLinkOmanga
                         hideOptionsButton
-                        mediaInfo={media as ApiDefaultResult}
+                        mediaInfo={media as any}
+                        title={media.title.romaji}
+                        formatOrType="MANGA"
+                        url={oManga.getImageUrl(media.coverImage.extraLarge)}
                         mediaId={media.id}
-                        title={media.title.userPreferred}
-                        formatOrType={media.format}
-                        url={media.coverImage.extraLarge}
                       />
-
-                      <MediaCard.LinkTitle
-                        title={media.title.userPreferred}
-                        id={media.id}
-                      />
+            
+                      <MediaCard.LinkTitleOmanga title={media.title.romaji} />
                     </MediaCard.Container>
                   </li>
                 ))
-              : userBookmarksList.map((media, key) => (
-                  <li key={key}>
+              : userBookmarksList.map((media) => (
+                  <li key={media.id}>
                     <MediaCard.Container onDarkMode>
-                      <MediaCard.MediaImgLink
+                      <MediaCard.MediaImgLinkOmanga
                         hideOptionsButton
-                        mediaInfo={media as ApiDefaultResult}
+                        mediaInfo={media as any}
+                        title={media.title.romaji}
+                        formatOrType="MANGA"
+                        url={oManga.getImageUrl(media.coverImage.extraLarge)}
                         mediaId={media.id}
-                        title={media.title.userPreferred}
-                        formatOrType={media.format}
-                        url={media.coverImage.extraLarge}
                       />
-
-                      <MediaCard.LinkTitle
-                        title={media.title.userPreferred}
-                        id={media.id}
-                      />
+            
+                      <MediaCard.LinkTitleOmanga title={media.title.romaji} />
                     </MediaCard.Container>
                   </li>
                 ))}

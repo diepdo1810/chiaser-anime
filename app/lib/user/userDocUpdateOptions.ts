@@ -3,7 +3,7 @@ import { addDoc, arrayRemove, arrayUnion, doc, FieldPath, getFirestore, setDoc, 
 
 type UpdateFavourites = {
     mediaData: {
-        id: number,
+        id: number | string,
         title: {
             romaji: string,
         },
@@ -15,7 +15,7 @@ type UpdateFavourites = {
         }
     },
     userId: string,
-    isAddAction: boolean
+    isAddAction: boolean,
 }
 
 export async function updateUserFavouriteMedias({ mediaData, userId, isAddAction }: UpdateFavourites) {

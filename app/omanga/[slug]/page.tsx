@@ -96,8 +96,8 @@ export default async function MangaPage({
             <h2 className={styles.heading_style}>COMMENTS</h2>
 
             <CommentsOSection
-              mangaInfo={manga} // Dữ liệu manga từ API oManga
-              mangaSlug={params.slug} // Đường dẫn slug
+              mangaInfo={manga}
+              mangaSlug={params.slug}
             />
           </section>
         </section>
