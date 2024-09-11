@@ -48,7 +48,6 @@ function CategoryNavList() {
         page: 1,
       })) as MangaItem[];
       setMangaList(trendingMangas?.data.items);
-      console.log(trendingMangas);
     } catch (error) {
       console.error(error);
       setError(true);

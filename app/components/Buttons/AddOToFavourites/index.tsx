@@ -50,7 +50,6 @@ export function Button({
     if (!user && !anilistUser) return dispatch(toggleShowLoginModalValue());
 
     setIsLoading(true);
-    console.log(mediaInfo);
     const favouriteMediaData = {
       id: mediaInfo.slug,
       title: {
@@ -87,7 +86,9 @@ export function Button({
 
     const wasMediaIdFoundOnDoc = userDoc
       .get("bookmarks")
-      ?.find((item: { id: string }) => item.id === mediaInfo._id);
+      ?.find((item: { id: string }) => {
+        return item.id === mediaInfo.slug;
+      });
 
     if (wasMediaIdFoundOnDoc) setWasAddedToFavourites(true);
   }

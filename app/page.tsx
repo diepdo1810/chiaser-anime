@@ -218,7 +218,7 @@ export default async function Home() {
         className={`${styles.medias_sections_container}`}
       >
         <ONavigationThroughMedias
-          headingTitle="News Mangas"
+          headingTitle="News"
           type="truyen-moi"
           isLayoutInverted
         />
@@ -228,7 +228,7 @@ export default async function Home() {
         className={`${styles.medias_sections_container} ${styles.dark_background}`}
       >
         <ONavigationThroughMedias
-          headingTitle="New Releases"
+          headingTitle="Releases"
           type="dang-phat-hanh"
           onDarkBackground
         />

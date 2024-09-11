@@ -12,6 +12,9 @@ import CloseSvg from "@/public/assets/x.svg";
 import Image from "next/image";
 import Link from "next/link";
 import * as AddToFavourites from "../../Buttons/AddOToFavourites";
+import MediaFormatIcon from "../../DynamicAssets/MediaFormatIcon";
+import ScoreRating from "../../DynamicAssets/ScoreRating";
+
 interface ONavigationThroughMediasProps {
   headingTitle: string;
   type: string | undefined;
@@ -48,10 +51,9 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
   useEffect(() => {
     async function fetchMangas() {
       const result = await oManga.getComicsByType({
-        type: type ?? 'truyen-moi',
+        type: type ?? "truyen-moi",
         page: 1,
       });
-      console.log(result.data.items);
       setMangaList(result.data.items);
     }
 
@@ -162,6 +164,21 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
 
                 <motion.div className={styles.info_container}>
                   <motion.h5>{mediaSelected.name}</motion.h5>
+
+                  <motion.p
+                    style={{
+                      color: "var(--white-100)",
+                    }}
+                  >
+                    <MediaFormatIcon format="MANGA" /> MANGA
+                  </motion.p>
+
+                  <motion.p>
+                    <ScoreRating
+                      ratingScore={Math.floor(Math.random() * 5)}
+                      source="otruyen"
+                    />
+                  </motion.p>
 
                   {mediaSelected.category && (
                     <motion.p>
