@@ -16,7 +16,7 @@ import anilistUsers from '@/app/api/anilistUsers'
 import { toggleShowLoginModalValue } from '@/app/lib/redux/features/loginModal'
 
 export function Button({ mediaInfo, children, svgOnlyColor, isActiveOnAnilist, customText }: {
-    mediaInfo: ApiDefaultResult, children?: React.ReactNode[], svgOnlyColor?: string, isActiveOnAnilist?: boolean, customText?: string
+    readonly mediaInfo: ApiDefaultResult, readonly children?: React.ReactNode[], readonly svgOnlyColor?: string, readonly isActiveOnAnilist?: boolean, readonly customText?: string
 }) {
 
     const [isLoading, setIsLoading] = useState<boolean>(false)

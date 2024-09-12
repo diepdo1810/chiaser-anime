@@ -231,6 +231,7 @@ export default async function Home() {
           headingTitle="Releases"
           type="dang-phat-hanh"
           onDarkBackground
+          page={2}
         />
       </section>
 

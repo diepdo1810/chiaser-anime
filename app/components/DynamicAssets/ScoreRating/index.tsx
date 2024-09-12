@@ -26,7 +26,7 @@ export default function ScoreRating({
   } else {
     maxScore = "10";
   }
-  
+
   const containerTitle = `${sourceNameFirstLetterUpperCase} Score: ${ratingScore} out of ${maxScore}`;
 
   return (
@@ -187,7 +187,11 @@ export default function ScoreRating({
   );
 }
 
-function RatingSourceIcon({ sourceName }: { readonly sourceName?: "anilist" | "imdb" | "otruyen" }) {
+function RatingSourceIcon({
+  sourceName,
+}: {
+  readonly sourceName?: "anilist" | "imdb" | "otruyen";
+}) {
   switch (sourceName) {
     case "anilist":
       return (
@@ -217,11 +221,18 @@ function RatingSourceIcon({ sourceName }: { readonly sourceName?: "anilist" | "i
 
     case "otruyen":
       return (
-        <span className={styles.source} style={{ background: "#e6b91e" }}>
+        <span
+          className={styles.source}
+          style={{
+            background: "#e6b91e",
+            transform: "scale(1) rotate(15deg)",
+            padding: "0",
+          }}
+        >
           <OTruyenSvg
             fill={"#000000"}
-            width={25}
-            height={25}
+            width={35}
+            height={35}
             alt={"OTruyen Icon"}
             title={"OTruyen"}
           />

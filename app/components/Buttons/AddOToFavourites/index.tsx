@@ -12,20 +12,22 @@ import { motion } from "framer-motion";
 import { updateUserFavouriteMedias } from "@/app/lib/user/userDocUpdateOptions";
 import { useAppDispatch, useAppSelector } from "@/app/lib/redux/hooks";
 import { toggleShowLoginModalValue } from "@/app/lib/redux/features/loginModal";
-import { MangaItem } from "@/app/ts/interfaces/apiOMangaDataInterface"; // Import MangaItem interface
+import { MangaItem, MangaResponse } from "@/app/ts/interfaces/apiOMangaDataInterface"; // Import MangaItem interface
+
+type mediaInfo = MangaItem | MangaResponse;
 
 export function Button({
-  mediaInfo, // Now uses MangaItem
+  mediaInfo,
   children,
   svgOnlyColor,
   isActiveOnAnilist,
   customText,
 }: {
-  mediaInfo: MangaItem; // Change type to MangaItem
-  children?: React.ReactNode[];
-  svgOnlyColor?: string;
-  isActiveOnAnilist?: boolean;
-  customText?: string;
+  readonly mediaInfo: mediaInfo;
+  readonly children?: React.ReactNode[];
+  readonly svgOnlyColor?: string;
+  readonly isActiveOnAnilist?: boolean;
+  readonly customText?: string;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [wasAddedToFavourites, setWasAddedToFavourites] = useState<boolean>(

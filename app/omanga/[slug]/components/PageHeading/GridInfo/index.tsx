@@ -34,7 +34,7 @@ export default function MangaInfo({ mangaInfo }: { mangaInfo: MangaResponse }) {
                         <ProgressSvg width={16} height={16} alt="Status" />
                     </span>
                     <h2>AUTHOR</h2>
-                    <p>{item.author || 'unknown'}</p>
+                    <p>{item.author !== '' ? item.author : 'Anonymous'}</p>
                 </li>
 
                 <li className={`${styles.info_item}`}>

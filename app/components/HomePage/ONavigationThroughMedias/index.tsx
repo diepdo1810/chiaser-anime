@@ -21,6 +21,7 @@ interface ONavigationThroughMediasProps {
   isFetchByDateButtonsOnScreen?: boolean;
   onDarkBackground?: boolean;
   isLayoutInverted?: boolean;
+  page?: number | undefined;
 }
 
 const framerMotionPopUpMedia = {
@@ -41,6 +42,7 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
   onDarkBackground,
   isLayoutInverted,
   isFetchByDateButtonsOnScreen,
+  page,
 }) => {
   const [mangaList, setMangaList] = useState<MangaItem[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -52,7 +54,7 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
     async function fetchMangas() {
       const result = await oManga.getComicsByType({
         type: type ?? "truyen-moi",
-        page: 1,
+        page: page ?? 1,
       });
       setMangaList(result.data.items);
     }
@@ -175,10 +177,12 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
 
                   <motion.p>
                     <ScoreRating
-                      ratingScore={Math.floor(Math.random() * 5)}
+                      ratingScore={Math.floor(Math.random() * 5) + 1}
                       source="otruyen"
                     />
                   </motion.p>
+
+                  <motion.p>{Math.floor(mediaSelected.chaptersLatest[0].chapter_name)} Chapter <br /> Update at: {new Date(mediaSelected.updatedAt).toLocaleDateString('en-GB').replace(/\//g, '/').slice(0, -2) + new Date(mediaSelected.updatedAt).getFullYear().toString().slice(-2)}</motion.p>
 
                   {mediaSelected.category && (
                     <motion.p>
@@ -194,7 +198,7 @@ const ONavigationThroughMedias: React.FC<ONavigationThroughMediasProps> = ({
               </motion.div>
 
               <motion.div className={styles.description_container}>
-                <motion.p>{mediaSelected.origin_name}</motion.p>
+                <motion.p>{Array.isArray(mediaSelected.origin_name) && mediaSelected.origin_name.length > 0 ? mediaSelected.origin_name[0] : mediaSelected.name}</motion.p>
               </motion.div>
 
               <motion.div className={styles.btns_container}>

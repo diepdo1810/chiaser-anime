@@ -73,7 +73,7 @@ function CategoryNavList() {
           {mangaList.length > 0 ? (
             <MediaInfoExpanded.Container mediaInfo={mangaList[0]}>
               <MediaInfoExpanded.Description
-                description={mangaList[0].status}
+                description={mangaList[0].origin_name[0] ?? mangaList[0].name}
               />
 
               <MediaInfoExpanded.Buttons mediaInfo={mangaList[0]} />
